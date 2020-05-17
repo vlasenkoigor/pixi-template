@@ -9,8 +9,7 @@ const app = new PIXI.Application({
 document.body.appendChild(app.view);
 
 const {stage, loader} = app;
-
-
+console.log(11)
 window.addEventListener("keydown", event => {
     if (event.keyCode === 32){
         //do something 
@@ -20,7 +19,9 @@ window.addEventListener("keydown", event => {
 
         
 // Listen for animate update
-app.ticker.add(tick);
+app.ticker.add(()=>{
+
+});
 
 
 
