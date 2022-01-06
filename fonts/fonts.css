@@ -1,0 +1,15 @@
+@font-face {
+    font-family: 'Fira Sans';
+    src: url(./FiraSans-Regular.ttf) format("opentype");
+}
+
+
+@font-face {
+    font-family: 'Skranji';
+    src: url(./Skranji-Regular.ttf) format("opentype");
+}
+
+@font-face {
+    font-family: 'RobotoCondensed-Regular';
+    src: url(./RobotoCondensed-Regular.ttf) format("opentype");
+}
