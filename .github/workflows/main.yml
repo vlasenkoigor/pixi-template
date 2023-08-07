@@ -22,10 +22,10 @@ jobs:
       run: npm install
     
     - name: Build
-      run: npm run build  # Change this to your build command (e.g., npm run build)
+      run: npm run build:prod  # Change this to your build command (e.g., npm run build)
     
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./build  # Change this to the directory containing your built files
+        publish_dir: ./dist  # Change this to the directory containing your built files

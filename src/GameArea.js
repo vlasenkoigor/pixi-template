@@ -1,35 +1,30 @@
 import * as PIXI from 'pixi.js'
-import {BG_HEIGHT, BG_WIDTH, HEIGHT, WIDTH} from "./size";
+import { HEIGHT, WIDTH} from "./size";
+import {clamp} from "./helpers";
 
 let ticker = PIXI.Ticker.shared;
 
 export class GameArea  extends PIXI.Container {
 
-    constructor(resources) {
+    constructor() {
         super();
 
+
+        this.logicalWidth = WIDTH;
+        this.logicalHeight = HEIGHT;
+
         const gr = new PIXI.Graphics();
-        gr.clear();
-        gr.beginFill(0x2E2B34, 0.2  );
-        gr.lineStyle(2, 0xFFFFFF);
-
-        const [w, h] = GameArea.SIZE;
-        this.logicalWidth = w;
-        this.logicalHeight = h;
-
-        gr.drawRect(0,0, w, h);
-
         this.addChild(gr);
+        this.gr = gr;
 
 
-        const text = new PIXI.Text(`game area\n${GameArea.SIZE[0]}x${GameArea.SIZE[1]}`, {fontFamily: 'Arial', fontSize : 50, fill : '#fff'})
-
-        text.anchor.set(0.5);
-
-        text.x = w / 2;
-        text.y = h / 2;
+        const text = new PIXI.Text(``, {fontFamily: 'Arial', fontSize : 50, fill : '#fff'})
+        text.anchor.set(0.5, 0);
+        this.text = text;
         this.addChild(text);
 
+        // draw components
+        this._draw();
 
         const r = 20;
         const circle = new PIXI.Graphics();
@@ -43,15 +38,19 @@ export class GameArea  extends PIXI.Container {
             const speed = 10;
             circle.x += dx * speed;
             circle.y += dy * speed;
+
+            circle.x = clamp(circle.x, 0, this.logicalWidth - 2*r);
+            circle.y = clamp(circle.y, 0, this.logicalHeight - 2*r);
+
             if (circle.x + 2*r >= this.logicalWidth){
                 dx = -1;
             }
 
-            if (circle.x < 0){
+            if (circle.x <= 0){
                 dx = 1;
             }
 
-            if (circle.y < 0){
+            if (circle.y <= 0){
                 dy = 1;
             }
 
@@ -63,22 +62,37 @@ export class GameArea  extends PIXI.Container {
         })
     }
 
-    align(width, height){
-        this.x = (width - WIDTH) / 2;
-        this.y = (height - HEIGHT) / 2;
+    _draw(orientation = 'landscape'){
+        const gr = this.gr;
+        gr.clear();
+        gr.beginFill(0x2E2B34, 0.2  );
+        gr.lineStyle(2, 0xFFFFFF);
+        gr.drawRect(0,0, this.logicalWidth, this.logicalHeight);
+
+        const text = this.text;
+        text.text = `game area\n${this.logicalWidth}x${this.logicalHeight}`;
+        text.x = this.logicalWidth / 2;
+        text.y =  10;
+
     }
 
 
-    resize(width, height){
-        this.resizer(width, height);
+    resize({gameWidth, gameHeight, orientationChanged, gameAreaRect}){
+        if (orientationChanged){
+            this.logicalWidth = gameWidth;
+            this.logicalHeight = gameHeight;
+            this._draw()
+        }
+
+        this._align(gameAreaRect);
     }
 
 
+    _align(gameAreaRect){
+        this.x = gameAreaRect.x;
+        this.y = gameAreaRect.y;
+    }
 }
 
 
-
-GameArea.SIZE = [
-    1280, 720
-]
 
