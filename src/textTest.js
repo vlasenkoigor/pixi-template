@@ -3,7 +3,7 @@ import * as PIXI from 'pixi.js'
 const texts = [];
 
 export function textTest(stage){
-    const amount = 4000;
+    const amount = 1000;
 
     for (let i = 0; i<amount; i++){
 
