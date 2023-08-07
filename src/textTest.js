@@ -3,13 +3,11 @@ import * as PIXI from 'pixi.js'
 const texts = [];
 
 export function textTest(stage){
-    const amount = 1000;
-
-
+    const amount = 4000;
 
     for (let i = 0; i<amount; i++){
 
-        const text = new PIXI.Text('text ' + i, {
+        const text = new PIXI.Text('text: ' + i, {
             fill : getRandomColor(),
             fontSize: 27
         });
@@ -18,9 +16,6 @@ export function textTest(stage){
 
         stage.addChild(text);
     }
-
-
-
 }
 
 
